@@ -66,13 +66,36 @@ class DBStorage:
 
         self.__session.rollback()
 
-    def get_user(self, username):
-        """Gets user by username"""
-        users = self.all(User)
-        for value in users.values():
-            if (value.username == username):
-                return value
+    # def get_user(self, username):
+    #     """Gets user by username"""
+    #     users = self.all(User)
+    #     for value in users.values():
+    #         if (value.username == username):
+    #             return value
             
+    def get_user(self, username):
+        """ Gets user by username."""
+        user = self.__session.query(User).filter(User.username == username).first()
+        return user
+
+
+
+    def get_cart_by_user(self, user_id):
+        """ Gets cafft by user_id"""
+        carts = self.all(Cart)
+
+        for value in carts.values():
+            if (value.user_id == user_id):
+                return value
+
+
+    def get_order_by_user(self, user_id):
+        """ Gets cafft by user_id"""
+        orders = self.all(Order)
+
+        for value in orders.values():
+            if (value.user_id == user_id):
+                return value
 
     def reload(self):
         """reloads data from the database"""

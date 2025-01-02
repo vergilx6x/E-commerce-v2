@@ -9,3 +9,4 @@ from api.app.blueprints.categories.routes import *
 from api.app.blueprints.users.routes import *
 from api.app.blueprints.carts.routes import *
 from api.app.blueprints.index import *
+from api.app.blueprints.auth.routes import *
