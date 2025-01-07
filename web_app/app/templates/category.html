@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category - E-Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+        h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .col-md-4 {
+            width: 30%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            border: none;
+        }
+        .card-img-top {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
+        .card-text {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .d-flex {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .alert {
+            padding: 15px;
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="mb-4">Category: {{ category.name }}</h2>
+
+    {% if products %}
+        <div class="row">
+            {% for product in products %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <a href="{{ url_for('product.product_detail', product_id=product.id) }}">
+                            <img src="{{url_for('static', filename='images/product.png') }}" class="card-img-top" alt="{{ product.name }}">
+                        </a>
+                        <div class="card-body">
+                            <a href="{{ url_for('product.product_detail', product_id=product.id) }}" class="card-title">
+                                <h5>{{ product.name }}</h5>
+                            </a>
+                            <p class="card-text">${{ product.price }}</p>
+                            <div class="d-flex">
+                                <form action="" method="post" class="me-2">
+                                    <button type="submit" class="btn-primary"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                                </form>
+                                <form action="" method="post">
+                                    <button type="submit" class="btn-secondary"><i class="fas fa-heart"></i> Add to Favorites</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert" role="alert">
+            No products found in this category.
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

@@ -1,37 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-commerce Website</title>
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://kit.fontawesome.com/408c06af7a.js" crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"> -->
-</head>
-<body>
-    <header id="header">
-        <a id="logo" href="#">E-commerce</a>
-        <nav>
-            <ul id="navbar">
-                <li><a class="active" href="index.html">Home</a></li>
-                <li><a href="#">Shop</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <li>
-                    <a href="cart.html" aria-label="Shopping Cart">
-                        <i class="fas fa-shopping-cart"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('auth.login')}}">
-                        <i class="fa-solid fa-user"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+{% extends 'base.html' %}
+
+{% block title %}Home - E-Shop{% endblock %}
+
+{% block content %}
 
     <section id="hero">
         <h4>Trade-in-offer</h4>
@@ -118,22 +89,73 @@
         <div class="categories-container">
             {% for category in categories %}
             <div class="category">
-                <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="">
-                <h4>{{ category.name }}</h4>
+                <a href="{{ url_for('category.category', category_id=category.id) }}">
+                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
+                    <h4>{{ category.name }}</h4>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section><section id="categories">
+        <h2>Categories</h2>
+        <div class="categories-container">
+            {% for category in categories %}
+            <div class="category">
+                <a href="{{ url_for('category.category', category_id=category.id) }}">
+                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
+                    <h4>{{ category.name }}</h4>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section><section id="categories">
+        <h2>Categories</h2>
+        <div class="categories-container">
+            {% for category in categories %}
+            <div class="category">
+                <a href="{{ url_for('category.category', category_id=category.id) }}">
+                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
+                    <h4>{{ category.name }}</h4>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section><section id="categories">
+        <h2>Categories</h2>
+        <div class="categories-container">
+            {% for category in categories %}
+            <div class="category">
+                <a href="{{ url_for('category.category', category_id=category.id) }}">
+                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
+                    <h4>{{ category.name }}</h4>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section><section id="categories">
+        <h2>Categories</h2>
+        <div class="categories-container">
+            {% for category in categories %}
+            <div class="category">
+                <a href="{{ url_for('category.category', category_id=category.id) }}">
+                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
+                    <h4>{{ category.name }}</h4>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section><section id="categories">
+        <h2>Categories</h2>
+        <div class="categories-container">
+            {% for category in categories %}
+            <div class="category">
+                <a href="{{ url_for('category.category', category_id=category.id) }}">
+                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
+                    <h4>{{ category.name }}</h4>
+                </a>
             </div>
             {% endfor %}
         </div>
     </section>
-    
-    <main>
-        <!-- Main content goes here -->
-    </main>
 
-    <footer class="section-p1">
-        <div></div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="js/script.js"></script>
-</body>
-</html>
+{% endblock %}

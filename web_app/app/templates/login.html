@@ -1,19 +1,46 @@
-<div class="container">
-    <h2 class="mb-4">Login</h2>
-    <div class="card border-light shadow-sm p-4">
-        <div class="card-body">
-            <form method="post">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
-            <p class="mt-3">New user? <a href="{{ url_for('auth.register')}}" class="btn btn-link">Register here</a></p>
-        </div>
+{% extends 'base.html' %}
+
+{% block title %}Home - E-Shop{% endblock %}
+
+{% block content %}
+
+<form method="POST" action="/login" class="login-form">
+    <h2>Login</h2>
+
+    <!-- Username Field -->
+    <div>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" placeholder="Enter your username" required>
+        <small id="username-error">Username is required</small>
     </div>
-</div>
+
+    <!-- Password Field -->
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Enter your password" required>
+        <small id="password-error">Password is required</small>
+    </div>
+
+    <!-- Remember Me Checkbox -->
+    <div class="checkbox-container">
+        <input type="checkbox" name="remember" id="remember">
+        <label for="remember">Remember me</label>
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+        <button type="submit">Login</button>
+    </div>
+
+    <!-- Forgot Password Link -->
+    <div>
+        <a href="/forgot-password">Forgot Password?</a>
+    </div>
+
+    <!-- Error Summary (if any) -->
+    <div class="error-summary" id="error-summary">
+        <p>Please fix the errors above</p>
+    </div>
+</form>
+
+{% endblock %}

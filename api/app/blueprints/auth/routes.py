@@ -1,78 +1,80 @@
-from flask import Blueprint, request, jsonify, abort
+import jwt
+import datetime
+from flask import request, jsonify, current_app
 from werkzeug.security import generate_password_hash, check_password_hash
-from api.app.models.user import User
+from api.app.models.user import User  # Assuming a User model
 from api.app.models import storage
 from api.app.blueprints import app_views
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 
-
-# # Initialize JWT Manager (ensure app.config['JWT_SECRET_KEY'] is set)
-# jwt = JWTManager()
-
-@app_views.route('/register', methods=['POST'], strict_slashes=False)
-def register_user():
-    """Register a new user"""
+# Register Route
+@app_views.route('/register', methods=['POST'])
+def register():
     data = request.get_json()
-    if not data:
-        abort(400, description="Request body must be JSON")
-    
-    email = data.get('email')
-    password = data.get('password')
     username = data.get('username')
-    if not email or not password or not username:
-        abort(400, description="Missing required fields: email, password, username")
-    
+    password = data.get('password')
+    email = data.get('email')
+
     if storage.get_user(username):
-        abort(400, description="Username already exists")
-    
+        return jsonify({"error": "Username already exists"}), 400
+
     hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-    new_user = User(email=email, username=username, password=hashed_password)
+    new_user = User(username=username, password=hashed_password, email=email)
     storage.new(new_user)
     storage.save()
+
     return jsonify({"message": "User registered successfully"}), 201
 
+
+# Login Route
 @app_views.route('/login', methods=['POST'])
-def login_user():
-    """Authenticate user and return JWT"""
+def login():
     data = request.get_json()
-    if not data:
-        abort(400, description="Request body must be JSON")
-    
     username = data.get('username')
     password = data.get('password')
+
     user = storage.get_user(username)
-    
-    if user and check_password_hash(user.password, password):
-        token = create_access_token(identity={"id": user.id, "username": user.username})
-        return jsonify({"access_token": token}), 200
-    return jsonify({"message": "Invalid username or password"}), 401
+    if not user or not check_password_hash(user.password, password):
+        return jsonify({"error": "Invalid credentials"}), 401
 
+    # Generate a JWT token
+    expiration = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+    token = jwt.encode(
+        {'user_id': user.id, 'exp': expiration},
+        current_app.config['SECRET_KEY'],
+        algorithm='HS256'
+    )
+
+    return jsonify({"token": token, "message": "Logged in successfully"}), 200
+
+
+# Logout Route
+@app_views.route('/logout', methods=['POST'])
+def logout():
+    # There's no need for token-based logout. The client just needs to remove the token from their session.
+    return jsonify({"message": "Logged out successfully"}), 200
+
+
+# User Profile Route
 @app_views.route('/user_profile', methods=['GET'])
-@jwt_required()
-def get_user_profile():
-    """Get the authenticated user's profile"""
-    identity = get_jwt_identity()
-    user = storage.get(User, identity['id'])
-    if not user:
-        abort(404, description="User not found")
+def user_profile():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({"error": "Missing authorization token"}), 401
     
-    return jsonify(user.to_dict()), 200
+    token = token.split(" ")[1]  # Ensure "Bearer" is stripped
+    try:
+        # Decode the token
+        payload = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+        user_id = payload.get('user_id')
 
-# @api_bp.route('/edit_profile', methods=['PUT'])
-# @jwt_required()
-# def edit_user_profile():
-#     """Edit the authenticated user's profile"""
-#     identity = get_jwt_identity()
-#     user = storage.get(User, identity['id'])
-#     if not user:
-#         abort(404, description="User not found")
-    
-#     data = request.get_json()
-#     user.email = data.get('email', user.email)
-#     user.username = data.get('username', user.username)
-#     user.first_name = data.get('first_name', user.first_name)
-#     user.last_name = data.get('last_name', user.last_name)
-    
-#     storage.save()
-#     return jsonify({"message": "Profile updated successfully"}), 200
+        user = storage.get(User, user_id)
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        return jsonify({"username": user.username}), 200
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token has expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+
