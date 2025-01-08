@@ -63,7 +63,7 @@ def home():
     categories = categories_response.json() if categories_response.status_code == 200 else []
 
     # Fetch products from the API
-    products_response = requests.get(f"http://127.0.0.1:5001/api/products")
+    products_response = requests.get(f"http://127.0.0.1:5001/api/new_products")
     products = products_response.json() if products_response.status_code == 200 else []
 
     return render_template('index.html', products=products, categories=categories)

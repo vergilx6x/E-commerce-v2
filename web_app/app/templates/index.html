@@ -12,54 +12,23 @@
         <button>Shop now</button>
     </section>
 
-    <section id="feature" class=""section-p1>
+    <section id="feature" class="section-p1">
         <div class="fe-box">
-            <!-- <img src="images/feature_background.png" alt=""> -->
             <h6>Free shipping</h6>
         </div>
         <div class="fe-box">
-            <!-- <img src="images/feature_background.png" alt=""> -->
             <h6>Personalized experience</h6>
         </div>
         <div class="fe-box">
-            <!-- <img src="images/feature_background.png" alt=""> -->
             <h6>High quality products</h6>
         </div>
         <div class="fe-box">
-            <!-- <img src="images/feature_background.png" alt=""> -->
             <h6>24/7 Support</h6>
-        </div>
-    </section>
-    <section id="product1" class="section-p1">
-        <h2>Featured products</h2>
-        <p>Summer collection</p>
-        <div class="products_container">
-            {% for product in products %}
-            <div class="product">
-                <img src="{{ url_for('static', filename='images/product.png') }}" alt="">
-                <div class="description">
-                    <span>Adidas</span>
-                    <h5>{{ product.name }}</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>${{ product.price }}</h4>
-                </div>
-                <a href="#">
-                    <i class="fas fa-shopping-cart cart" id="cart_but"></i>
-                </a>
-            </div>
-            {% endfor %}
         </div>
     </section>
 
     <section id="product1" class="section-p1">
         <h2>New products</h2>
-        <p>Summer collection</p>
         <div class="products_container">
             {% for product in products %}
             <div class="product">
@@ -76,75 +45,17 @@
                     </div>
                     <h4>${{ product.price }}</h4>
                 </div>
-                <a href="#">
-                    <i class="fas fa-shopping-cart cart" id="cart_but"></i>
-                </a>
+                <form action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" method="POST">
+                    <button type="submit" class="cart_button">
+                        <i class="fas fa-shopping-cart cart" id="cart_but"></i>
+                    </button>
+                </form>
             </div>
             {% endfor %}
         </div>
     </section>
 
     <section id="categories">
-        <h2>Categories</h2>
-        <div class="categories-container">
-            {% for category in categories %}
-            <div class="category">
-                <a href="{{ url_for('category.category', category_id=category.id) }}">
-                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
-                    <h4>{{ category.name }}</h4>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </section><section id="categories">
-        <h2>Categories</h2>
-        <div class="categories-container">
-            {% for category in categories %}
-            <div class="category">
-                <a href="{{ url_for('category.category', category_id=category.id) }}">
-                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
-                    <h4>{{ category.name }}</h4>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </section><section id="categories">
-        <h2>Categories</h2>
-        <div class="categories-container">
-            {% for category in categories %}
-            <div class="category">
-                <a href="{{ url_for('category.category', category_id=category.id) }}">
-                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
-                    <h4>{{ category.name }}</h4>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </section><section id="categories">
-        <h2>Categories</h2>
-        <div class="categories-container">
-            {% for category in categories %}
-            <div class="category">
-                <a href="{{ url_for('category.category', category_id=category.id) }}">
-                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
-                    <h4>{{ category.name }}</h4>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </section><section id="categories">
-        <h2>Categories</h2>
-        <div class="categories-container">
-            {% for category in categories %}
-            <div class="category">
-                <a href="{{ url_for('category.category', category_id=category.id) }}">
-                    <img src="{{ url_for('static', filename='images/electronics.jpg') }}" alt="{{ category.name }}">
-                    <h4>{{ category.name }}</h4>
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </section><section id="categories">
         <h2>Categories</h2>
         <div class="categories-container">
             {% for category in categories %}

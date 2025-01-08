@@ -131,6 +131,26 @@ def post_cart(user_id):
 
 # This is the cart items part.
 
+@app_views.route('/users/<user_id>/cart/cart-products',
+                 methods=['GET'], strict_slashes=False)
+def get_cart_products(user_id):
+    """ Gets cart items"""
+    cart = storage.get_cart_by_user(user_id)
+    cart_items = storage.all(Cart_item).values()
+    list_cart_products = []
+
+    if not cart_items:
+        abort(404)
+
+    for item in cart_items:
+        if item.cart_id == cart.id:
+            product = storage.get(Product, item.product_id)
+            product.quantity = item.quantity
+            list_cart_products.append(product.to_dict())
+
+    return jsonify(list_cart_products)
+
+
 @app_views.route('/users/<user_id>/cart/cart-items',
                  methods=['GET'], strict_slashes=False)
 def get_cart_items(user_id):
@@ -161,26 +181,29 @@ def get_cart_item(user_id, cart_id):
 
 @app_views.route('/users/<user_id>/cart/cart-items', methods=['POST'], strict_slashes=False)
 def post_cart_item(user_id):
-    """ Post a cart item."""
+    """Post a cart item."""
     cart = storage.get_cart_by_user(user_id)
 
     if not cart:
         abort(404, description="Cart not found")
 
-    if 'product_id' not in request.get_json():
-        abort(400, description="Missing product id")
-    if 'quantity' not in request.get_json():
-        abort(400, description="Missing quantity")
-    
     data = request.get_json()
 
+    # Validate input data
+    if 'product_id' not in data:
+        abort(400, description="Missing product id")
+    if 'quantity' not in data:
+        abort(400, description="Missing quantity")
+    
     product = storage.get(Product, data['product_id'])
     if not product:
         abort(404, description="Product not found")
 
+    # Check stock availability
     if product.quantity < data['quantity']:
         abort(400, description="Insufficient stock for the requested quantity")
 
+    # Check if the product already exists in the cart
     existing_item = next(
         (item for item in cart.cart_items if item.product_id == product.id), None
     )
@@ -190,12 +213,38 @@ def post_cart_item(user_id):
         obj = existing_item
     else:
         # Create a new cart item
-        data['cart_id'] = cart.id
-        obj = Cart_item(**data)
+        new_item_data = {
+            'cart_id': cart.id,
+            'product_id': product.id,
+            'quantity': data['quantity'],
+            'price': product.price,
+            'description': product.description,
+            'image_url': product.image_url
+        }
+        obj = Cart_item(**new_item_data)
+        print(obj)
         obj.save()
 
     # Update product stock
     product.quantity -= data['quantity']
     product.save()
-    
-    return make_response(jsonify(obj.to_dict()), 201)
+
+    # Fetch the updated product details directly from the database
+    obj_data = obj.to_dict()
+    obj_data['product'] = product.to_dict()  # Embed product details
+
+    return make_response(jsonify(obj_data), 201)
+
+
+@app_views.route('/users/<user_id>/cart/<cart_item_id>', methods=['DELETE'], strict_slashes=False)
+def delete_cart_item(cart_item_id, user_id):
+    """Delete a cart_item"""
+    cart_item = storage.get(Cart_item, cart_item_id)
+
+    if not cart_item:
+        abort(404)
+
+    storage.delete(cart_item)
+    storage.save()
+
+    return make_response(jsonify({}), 200)

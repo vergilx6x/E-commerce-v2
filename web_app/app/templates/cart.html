@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Cart - E-Shop{% endblock %}
+
+{% block content %}
+<div class="container" style="font-family: Arial, sans-serif; padding: 20px;">
+    <h2 style="text-align: center; margin-bottom: 30px;">Shopping Cart</h2>
+    <div class="cart-items">
+        {% if cart_items %}
+            {% for item in cart_items %}
+            <div class="cart-item" style="border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; padding: 15px; display: flex;">
+                <div class="product-image" style="flex: 1;">
+                    <img src="{{ item.image_url or url_for('static', filename='default_product_image.jpg') }}" alt="{{ item.name }}" style="max-width: 100%; height: auto; border-radius: 5px;">
+                </div>
+                <div class="product-details" style="flex: 2; margin-left: 20px;">
+                    <h3 style="margin: 0 0 10px 0;">Name:{{ item.name }}</h3>
+                    <p style="margin: 0 0 10px 0;">Price: ${{ item.price }}</p>
+                    <p style="margin: 0 0 10px 0;">Quantity: {{ item.quantity }}</p>
+                    <form action="{{ url_for('cart.remove_from_cart', product_id=item.id) }}" method="post" style="margin: 0;">
+                        <button type="submit" style="background-color: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Remove</button>
+                    </form>
+                    
+                    
+
+
+                </div>
+            </div>
+            {% endfor %}
+            <div class="place-order" style="text-align: center; margin-top: 40px;">
+                <form action="#" method="post">
+                    <button type="submit" style="background-color: #3498db; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 5px; cursor: pointer;">Place Order</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="empty-cart" style="text-align: center; padding: 50px 0;">
+                <p style="color: #888; font-size: 18px;">Your cart is empty.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

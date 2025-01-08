@@ -15,6 +15,26 @@ def get_products():
         
     return jsonify(list_products)
 
+@app_views.route('/new_products', methods=['GET'], strict_slashes=False)
+def get_new_products():
+    """ Retrieves last 10 products """
+    all_products = list(storage.all(Product).values())
+    all_products.sort(key=lambda p: p.created_at, reverse=True)
+    new_products = all_products[:10]
+    list_products = []
+    
+    for product in new_products:
+        list_products.append(product.to_dict()) 
+        
+    return jsonify(list_products)
+
+    # categories = storage.all(Category).values()
+    # all_products = list(storage.all(Product).values())
+    # all_products.sort(key=lambda p: p.created_at, reverse=True)
+    # new_products = all_products[:10]
+
+    # return render_template('home.html', categories=categories, new_products=new_products, all_products=all_products)
+
 @app_views.route('categories/<category_id>/products', methods=['GET'], strict_slashes=False)
 def get_products_by_category(category_id):
     """ Retrieves all products of a specefic category """

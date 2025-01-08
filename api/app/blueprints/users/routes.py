@@ -14,23 +14,23 @@ def get_users():
         list_users.append(user.to_dict())
     return jsonify(list_users)
 
-# @app_views.route('users/<user_id>', methods=['GET'], strict_slashes=False)
-# def get_user_by_id(user_id):
-#     """retrieves an user """
-#     user = storage.get(User, user_id)
-#     if not user:
-#         abort(404)
-    
-#     return jsonify(user.to_dict())
-
-@app_views.route('users/<username>', methods=['GET'], strict_slashes=False)
-def get_user(username):
+@app_views.route('users/<user_id>', methods=['GET'], strict_slashes=False)
+def get_user_by_id(user_id):
     """retrieves an user """
-    user = storage.get_user(username)
+    user = storage.get(User, user_id)
     if not user:
         abort(404)
     
     return jsonify(user.to_dict())
+
+# @app_views.route('users/<username>', methods=['GET'], strict_slashes=False)
+# def get_user(username):
+#     """retrieves an user """
+#     user = storage.get_user(username)
+#     if not user:
+#         abort(404)
+    
+#     return jsonify(user.to_dict())
 
 @app_views.route('users/<user_id>', methods=['DELETE'], strict_slashes=False)
 def delete_user(user_id):

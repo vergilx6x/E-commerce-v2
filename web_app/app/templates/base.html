@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-commerce Website</title>
+    <title>{% block title %}E-commerce Website{% endblock %}</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://kit.fontawesome.com/408c06af7a.js" crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"> -->
 </head>
 <body>
     <header id="header">
@@ -19,16 +18,37 @@
                 <li><a href="#">Blog</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
+
+                <!-- Shopping Cart - visible if user is authenticated -->
+                {% if session.get('token') %}
                 <li>
-                    <a href="cart.html" aria-label="Shopping Cart">
+                    <a href="{{ url_for('cart.cart') }}" aria-label="Shopping Cart">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                 </li>
+                
+                <!-- User Profile Link (for authenticated users) -->
                 <li>
-                    <a href="{{ url_for('auth.login')}}">
-                        <i class="fa-solid fa-user"></i>
+                    <a href="{{ url_for('auth.user_profile') }}">
+                        <i class="fa-solid fa-user"></i> Profile
                     </a>
                 </li>
+
+                <!-- Logout Link (for authenticated users) -->
+                <li>
+                    <a href="{{ url_for('auth.logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+                {% else %}
+                
+                <!-- Login Link (for unauthenticated users) -->
+                <li>
+                    <a href="{{ url_for('auth.login') }}">
+                        <i class="fa-solid fa-user"></i> Login
+                    </a>
+                </li>
+                {% endif %}
             </ul>
         </nav>
     </header>
@@ -82,6 +102,9 @@
             <!-- Products Section -->
             <div class="footer-section">
                 <h4>Shop</h4>
-               
-    
-    
+                <!-- Add more shop-related links here -->
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
