@@ -1,3 +1,10 @@
+
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - E-Shop{% endblock %}
+
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,7 +118,7 @@
             <p>Available Quantity: {{ product.quantity }}</p>
 
             <div class="d-flex mb-4">
-                <form action="#" method="post" class="me-2">
+                <form action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" method="post" class="me-2">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-cart-plus"></i> Add to Cart</button>
                 </form>
                 <form action="#" method="post">
@@ -126,3 +133,5 @@
 
 </body>
 </html>
+
+{% endblock %}

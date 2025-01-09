@@ -600,6 +600,16 @@ form.register-form #error-summary {
     border-radius: 4px;
 }
 
+.product-link {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Ensures the link inherits the color of the surrounding text */
+}
+
+.product-link:hover {
+    text-decoration: none; /* Prevents underline on hover */
+}
+
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

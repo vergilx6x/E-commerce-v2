@@ -68,6 +68,19 @@ def home():
 
     return render_template('index.html', products=products, categories=categories)
 
+@home_bp.route('/shop', strict_slashes=False)
+def shop():
+    cart = []
+    # Fetch categories from the API
+    categories_response = requests.get(f"http://127.0.0.1:5001/api/categories")
+    categories = categories_response.json() if categories_response.status_code == 200 else []
+
+    # Fetch products from the API
+    products_response = requests.get(f"http://127.0.0.1:5001/api/products")
+    products = products_response.json() if products_response.status_code == 200 else []
+
+    return render_template('shop.html', products=products, categories=categories)
+
 @home_bp.route('/add_to_cart/<int:item_id>', methods=['POST'])
 def add_to_cart(item_id):
     # Add to cart functionality (you can connect this to your API or database)

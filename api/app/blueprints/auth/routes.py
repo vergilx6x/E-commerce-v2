@@ -17,7 +17,8 @@ def register():
     if storage.get_user(username):
         return jsonify({"error": "Username already exists"}), 400
 
-    hashed_password = generate_password_hash(password)
+    # hashed_password = generate_password_hash(password)
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
     new_user = User(username=username, password=hashed_password, email=email)
     storage.new(new_user)
     storage.save()
@@ -60,7 +61,7 @@ def user_profile():
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        return jsonify({"username": user.username, "user_id": user.id}), 200
+        return jsonify({"username": user.username, "user_id": user.id, "email": user.email, "first_name": user.first_name, "last_name": user.last_name, "phone_number": user.phone_number, "country": user.country, "city": user.city, "address": user.address, "postal_code": user.postal_code, "image_url": user.image_url}), 200
     except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
         return jsonify({"error": "Invalid or expired token"}), 401
 

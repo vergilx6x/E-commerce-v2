@@ -95,8 +95,8 @@ def user_profile():
         response = requests.get(f"{API_BASE_URL}/user_profile", headers={"Authorization": f"Bearer {token}"})
         if response.status_code == 200:
             user_data = response.json()
-            print(user_data.get('username'))
-            return render_template('user_profile.html', username=user_data.get('username'))
+            print(user_data)
+            return render_template('user_profile.html', user=user_data)
         flash(response.json().get("error", "Unable to fetch user profile!"), "danger")
         return redirect(url_for('auth.login'))
     except requests.RequestException as e:
