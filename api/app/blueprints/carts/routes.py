@@ -42,7 +42,8 @@ def get_cart_by_user(user_id):
     return jsonify(cart.to_dict())
 
 
-# @app_views.route('/carts/<cart_id>', methods=['DELETE'], strict_slashes=False)
+# @app_views.route('/carts/<cart_id>', methods=['DELETE'],
+#                  strict_slashes=False)
 # def delete_cart(cart_id):
 #     """Delete a cart"""
 #     cart = storage.get(Cart, cart_id)
@@ -56,7 +57,8 @@ def get_cart_by_user(user_id):
 #     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/users/<user_id>/cart', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/users/<user_id>/cart', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_cart(cart_id):
     """Delete a cart"""
     cart = storage.get(Cart, cart_id)
@@ -112,7 +114,8 @@ def put_cart(cart_id):
     return make_response(jsonify(cart.to_dict()), 200)
 
 
-@app_views.route('/users/<user_id>/cart', methods=['POST'], strict_slashes=False)
+@app_views.route('/users/<user_id>/cart', methods=['POST'],
+                 strict_slashes=False)
 def post_cart(user_id):
     """ Post a cart related to an user. """
     if not request.get_json():
@@ -127,9 +130,8 @@ def post_cart(user_id):
     obj = Cart(**data)
     obj.save()
 
-    return make_response(jsonify(obj.to_dict()), 201)    
+    return make_response(jsonify(obj.to_dict()), 201)
 
-# This is the cart items part.
 
 @app_views.route('/users/<user_id>/cart/cart-products',
                  methods=['GET'], strict_slashes=False)
@@ -168,9 +170,11 @@ def get_cart_items(user_id):
 
     return jsonify(list_cart_items)
 
-@app_views.route('/users/<user_id>/cart/<cart_item_id>', methods=['GET'], strict_slashes=False)
+
+@app_views.route('/users/<user_id>/cart/<cart_item_id>', methods=['GET'],
+                 strict_slashes=False)
 def get_cart_item(user_id, cart_id):
-    """ Get a specific cart item. """ 
+    """ Get a specific cart item. """
     cart_item = storage.get(Cart_item, cart_id)
 
     if not cart_item:
@@ -179,7 +183,8 @@ def get_cart_item(user_id, cart_id):
     return jsonify(cart_item.to_dict())
 
 
-@app_views.route('/users/<user_id>/cart/cart-items', methods=['POST'], strict_slashes=False)
+@app_views.route('/users/<user_id>/cart/cart-items', methods=['POST'],
+                 strict_slashes=False)
 def post_cart_item(user_id):
     """Post a cart item."""
     cart = storage.get_cart_by_user(user_id)
@@ -194,7 +199,7 @@ def post_cart_item(user_id):
         abort(400, description="Missing product id")
     if 'quantity' not in data:
         abort(400, description="Missing quantity")
-    
+
     product = storage.get(Product, data['product_id'])
     if not product:
         abort(404, description="Product not found")
@@ -205,7 +210,8 @@ def post_cart_item(user_id):
 
     # Check if the product already exists in the cart
     existing_item = next(
-        (item for item in cart.cart_items if item.product_id == product.id), None
+        (item for item in cart.cart_items if
+         item.product_id == product.id), None
     )
     if existing_item:
         # Update quantity if the product already exists in the cart
@@ -236,7 +242,8 @@ def post_cart_item(user_id):
     return make_response(jsonify(obj_data), 201)
 
 
-@app_views.route('/users/<user_id>/cart/<cart_item_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/users/<user_id>/cart/<cart_item_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_cart_item(cart_item_id, user_id):
     """Delete a cart_item"""
     cart_item = storage.get(Cart_item, cart_item_id)

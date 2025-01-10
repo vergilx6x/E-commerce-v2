@@ -8,22 +8,26 @@ import os
 
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-app.config['JWT_SECRET_KEY'] = environ.get('JWT_SECRET_KEY', 'your_default_secret_key')  # Ensure JWT_SECRET_KEY is set properly
+app.config['JWT_SECRET_KEY'] = environ.get('JWT_SECRET_KEY',
+                                           'your_default_secret_key')
+
 app.secret_key = os.getenv('SECRET_KEY', 'your_default_secret_key')
-# Initialize JWTManager
 jwt = JWTManager(app)
 app.register_blueprint(app_views)
-CORS(app, supports_credentials=True)  # Allow co
+CORS(app, supports_credentials=True)
+
 
 @app.teardown_appcontext
 def close_db(error):
     """ Close Storage """
     storage.close()
 
+
 @app.errorhandler(404)
 def not_found(error):
     """ Handle 404 error """
     return make_response(jsonify({'error': "Not found"}), 404)
+
 
 if __name__ == "__main__":
     """ Main Function """

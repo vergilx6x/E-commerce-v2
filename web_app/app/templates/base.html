@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}E-commerce Website{% endblock %}</title>
+    <title>{% block title %}E-Shop Website{% endblock %}</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://kit.fontawesome.com/408c06af7a.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header id="header">
-        <a id="logo" href="{{ url_for('home.home') }}">E-commerce</a>
+        <a id="logo" href="{{ url_for('home.home') }}">E-Shop</a>
         <nav>
             <ul id="navbar">
                 <li><a class="active" href="{{ url_for('home.home') }}">Home</a></li>
                 <li><a href="{{ url_for('home.shop') }}">Shop</a></li>
                 <li><a href="#">Blog</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="{{ url_for('home.about') }}">About</a></li>
+                <li><a href="{{ url_for('home.contact') }}">Contact</a></li>
 
                 <!-- Shopping Cart - visible if user is authenticated -->
                 {% if session.get('token') %}
@@ -53,25 +53,36 @@
         </nav>
     </header>
 
-    <main class="container mt-5 pt-5">
+    <main class="container" style="padding-top: 5rem; display: none;" id="main-container">
         <div id="flash-messages"></div>
     
         <!-- Flash messages block -->
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
-                <div class="alert-container">
+                <script>
+                    document.getElementById('main-container').style.display = 'block';
+                </script>
+                <div class="alert-container" style="position: relative;">
                     {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        <div class="alert alert-{{ category }}" style="border: 1px solid; padding: 1rem; border-radius: 0.25rem; margin-bottom: 10px; background-color: {% if category == 'success' %}#d4edda{% elif category == 'error' %}#f8d7da{% elif category == 'info' %}#d1ecf1{% elif category == 'warning' %}#fff3cd{% else %}#e2e3e5{% endif %}; color: {% if category == 'success' %}#155724{% elif category == 'error' %}#721c24{% elif category == 'info' %}#0c5460{% elif category == 'warning' %}#856404{% else %}#383d41{% endif %};">
                             {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <button type="button" class="close-btn" onclick="this.parentElement.style.display='none';" style="float: right; background: none; border: none; font-size: 1.25rem; line-height: 1; cursor: pointer; color: #000;">
+                                &times;
+                            </button>
                         </div>
                     {% endfor %}
                 </div>
+            {% else %}
+                <script>
+                    document.getElementById('main-container').style.display = 'none';
+                </script>
             {% endif %}
         {% endwith %}
     
-        {% block content %}{% endblock %}
+    
     </main>
+    
+    {% block content %}{% endblock %}
 
     <footer>
         <div class="footer-container">
@@ -79,11 +90,11 @@
             <div class="footer-section">
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="/about-us">About Us</a></li>
-                    <li><a href="/careers">Careers</a></li>
-                    <li><a href="/privacy-policy">Privacy Policy</a></li>
-                    <li><a href="/terms-and-conditions">Terms & Conditions</a></li>
-                    <li><a href="/sitemap">Sitemap</a></li>
+                    <li><a href="{{ url_for('home.about') }}">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Sitemap</a></li>
                 </ul>
             </div>
     
@@ -91,11 +102,11 @@
             <div class="footer-section">
                 <h4>Customer Support</h4>
                 <ul>
-                    <li><a href="/faq">FAQ</a></li>
-                    <li><a href="/shipping">Shipping Info</a></li>
-                    <li><a href="/returns">Returns & Exchanges</a></li>
-                    <li><a href="/contact-us">Contact Us</a></li>
-                    <li><a href="/order-tracking">Order Tracking</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Shipping Info</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="{{ url_for('home.contact') }}">Contact Us</a></li>
+                    <li><a href="#">Order Tracking</a></li>
                 </ul>
             </div>
     

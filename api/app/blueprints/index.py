@@ -22,7 +22,8 @@ def status():
 def number_objects():
     """ Retrieves the number of each objects by type """
     classes = [Cart, Cart_item, Category, Favorite, Order, Order_item, Product]
-    names = ["Cart", "Cart_item", "Category", "Favorite", "Order", "Order_item", "Product"]
+    names = ["Cart", "Cart_item", "Category", "Favorite",
+             "Order", "Order_item", "Product"]
 
     num_objs = {}
     for i in range(len(classes)):

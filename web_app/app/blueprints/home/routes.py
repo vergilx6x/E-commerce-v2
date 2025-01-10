@@ -85,3 +85,17 @@ def shop():
 def add_to_cart(item_id):
     # Add to cart functionality (you can connect this to your API or database)
     return jsonify({"message": f"Product {item_id} added to cart!"}), 200
+
+@home_bp.route('/about', strict_slashes=False)
+def about():
+
+
+    return render_template('about.html')
+
+
+
+@home_bp.route('/contact', strict_slashes=False)
+def contact():
+    
+
+    return render_template('contact.html')

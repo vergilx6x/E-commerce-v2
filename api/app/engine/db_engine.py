@@ -15,7 +15,10 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
 
 
-classes = {"User": User, "Category": Category, "Product": Product, "Cart": Cart, "Cart_item": Cart_item, "Order": Order, "Order_item": Order_item, "Favorite": Favorite}
+classes = {"User": User, "Category": Category, "Product": Product,
+           "Cart": Cart, "Cart_item": Cart_item, "Order": Order,
+           "Order_item": Order_item, "Favorite": Favorite}
+
 
 class DBStorage:
 
@@ -47,7 +50,7 @@ class DBStorage:
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
         return (new_dict)
-    
+
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)
@@ -72,13 +75,12 @@ class DBStorage:
     #     for value in users.values():
     #         if (value.username == username):
     #             return value
-            
+
     def get_user(self, username):
         """ Gets user by username."""
-        user = self.__session.query(User).filter(User.username == username).first()
+        user = self.__session.query(User).filter(User.username ==
+                                                 username).first()
         return user
-
-
 
     def get_cart_by_user(self, user_id):
         """ Gets cafft by user_id"""
@@ -87,7 +89,6 @@ class DBStorage:
         for value in carts.values():
             if (value.user_id == user_id):
                 return value
-
 
     def get_order_by_user(self, user_id):
         """ Gets cafft by user_id"""

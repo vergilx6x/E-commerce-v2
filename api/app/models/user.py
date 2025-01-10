@@ -22,8 +22,9 @@ class User(BaseModel, Base):
     postal_code = Column(String(60), nullable=True)
     image_url = Column(String(255), nullable=True)
     is_admin = Column(Boolean, nullable=False, default=False)
-    
-    favorites = relationship("Favorite", back_populates="user", cascade="all, delete-orphan")
+
+    favorites = relationship("Favorite", back_populates="user",
+                             cascade="all, delete-orphan")
     carts = relationship("Cart", backref="user", cascade="all, delete-orphan")
 
     def __init__(self, *args, **kwargs):

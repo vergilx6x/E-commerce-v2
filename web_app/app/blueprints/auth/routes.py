@@ -1,33 +1,41 @@
 import requests
-from flask import Blueprint, request, session, redirect, url_for, render_template, flash
+from flask import request, session, redirect, url_for, render_template, flash
 from web_app.app.blueprints.auth import bp as auth_bp
 
-# Base URL of the API app
-API_BASE_URL = "http://127.0.0.1:5001/api/"  # Update the URL as needed
+
+API_BASE_URL = "http://127.0.0.1:5001/api/"
+
 
 def is_user_authenticated():
+    """Fetch the user_profile API,
+    including the session token,
+    return True if the API response code is 200,
+    False if otherwise."""
     token = session.get('token')
     if token:
         try:
-            response = requests.get(f"{API_BASE_URL}/user_profile", headers={"Authorization": f"Bearer {token}"})
+            response = requests.get(f"{API_BASE_URL}/user_profile",
+                                    headers={"Authorization": f"Bearer {token}"})
             if response.status_code == 200:
                 return True
-            elif response.status_code == 401:  # Token expired or invalid
+            elif response.status_code == 401:
                 session.pop('token', None)
                 refresh_token = session.get('refresh_token')
                 if refresh_token:
-                    refresh_response = requests.post(f"{API_BASE_URL}/refresh", json={"refresh_token": refresh_token})
+                    refresh_response = requests.post(f"{API_BASE_URL}/refresh",
+                                                     json={"refresh_token": refresh_token})
                     if refresh_response.status_code == 200:
                         session['token'] = refresh_response.json().get('token')
-                        session['refresh_token'] = refresh_response.json().get('refresh_token', refresh_token)  # Update refresh token if available
+                        session['refresh_token'] = refresh_response.json().get('refresh_token', refresh_token)
                         return True
         except requests.RequestException:
             pass
     return False
 
-# Register Route
+
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
+    """ """
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
@@ -53,7 +61,7 @@ def register():
 
     return render_template('register.html')
 
-# Login Route
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -76,7 +84,7 @@ def login():
 
     return render_template('login.html')
 
-# Logout Route
+
 @auth_bp.route('/logout', methods=['GET'])
 def logout():
     session.pop('token', None)
@@ -84,7 +92,7 @@ def logout():
     flash("Logged out successfully!", "success")
     return redirect(url_for('auth.login'))
 
-# User Profile Route
+
 @auth_bp.route('/user_profile', methods=['GET'])
 def user_profile():
     token = session.get('token')
@@ -102,5 +110,3 @@ def user_profile():
     except requests.RequestException as e:
         flash(f"Error connecting to the profile service: {str(e)}", "danger")
         return redirect(url_for('auth.login'))
-
-# Cart Routes

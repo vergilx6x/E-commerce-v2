@@ -2,8 +2,9 @@
 """ holds class cart_item"""
 
 from api.app.models.base_model import Base, BaseModel
-from sqlalchemy import Column, Integer,String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
+
 
 class Cart_item(BaseModel, Base):
 

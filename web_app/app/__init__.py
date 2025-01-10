@@ -2,14 +2,13 @@ from flask import Flask
 from web_app.config import Config
 from datetime import timedelta
 
+
 def create_app():
     app = Flask(__name__)
-    # Load configuration from Config class
+
     app.config.from_object(Config)
-    app.config['SECRET_KEY'] = 'your_secret_key'  # Securely set your secret key
-    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)  # Set session lifetime
-
-
+    app.config['SECRET_KEY'] = 'your_secret_key'
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
 
     from web_app.app.blueprints.home import bp as home_bp
     from web_app.app.blueprints.users import bp as user_bp
