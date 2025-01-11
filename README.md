@@ -6,7 +6,7 @@ An e-commerce web application built with Flask, designed to allow users to brows
 
 - **Deployed Site**: [E-commerce Web Application](https://www.developmentenv.tech/home).
 - **GitHub Repository**: [Project GitHub](https://github.com/vergilx6x/E-commerce-v2.git).
-- **Landing Page**: [Landing Page](https://vergilx6x.github.io/E-commerce-v2/).
+- **Landing Page**: [Landing Page](https://vergilx6x.github.io/E-commerce-website-v2/).
 - **Author LinkedIn**: [Mohamed Amine Thami](https://www.linkedin.com/in/mohamed-amine-thami-526b9b280/).
 
 ## Introduction
