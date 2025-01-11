@@ -6,7 +6,7 @@ An e-commerce web application built with Flask, designed to allow users to brows
 
 - **Deployed Site**: [E-commerce Web Application](https://www.developmentenv.tech/home).
 - **GitHub Repository**: [Project GitHub](https://github.com/vergilx6x/E-commerce-website-v2.git).
-- **Landing Page**: [Landing Page](https://vergilx6x.github.io/E-commerce-website-v2/).
+- **Landing Page**: [Landing Page](https://vergilx6x.github.io/E-commerce-v2/).
 - **Author LinkedIn**: [Mohamed Amine Thami](https://www.linkedin.com/in/mohamed-amine-thami-526b9b280/).
 
 ## Introduction
@@ -32,69 +32,94 @@ This application offers a fully functional e-commerce platform where users can:
 
 ```bash
 .
-├── app
-│   ├── auth
-│   │   ├── __init__.py
-│   │   └── routes.py
-│   ├── cart
-│   │   ├── __init__.py
-│   │   └── routes.py
-│   ├── favorite
-│   │   ├── __init__.py
-│   │   └── routes.py
-│   ├── home
-│   │   ├── __init__.py
-│   │   └── routes.py
-│   ├── __init__.py
-│   ├── models
-│   │   ├── base_model.py
-│   │   ├── cart_item.py
-│   │   ├── cart.py
-│   │   ├── category.py
+├── api
+│   ├── app
+│   │   ├── blueprints
+│   │   │   ├── auth
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── routes.py
+│   │   │   ├── carts
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── routes.py
+│   │   │   ├── categories
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── routes.py
+│   │   │   ├── index.py
+│   │   │   ├── __init__.py
+│   │   │   ├── orders
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── routes.py
+│   │   │   ├── products
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── routes.py
+│   │   │   └── users
+│   │   │       ├── __init__.py
+│   │   │       └── routes.py
+│   │   ├── config.py
 │   │   ├── engine
 │   │   │   ├── db_engine.py
 │   │   │   └── __init__.py
-│   │   ├── favorite.py
 │   │   ├── __init__.py
-│   │   ├── order_item.py
-│   │   ├── order.py
-│   │   ├── product.py
-│   │   └── user.py
-│   ├── order
-│   │   └── __init__.py
-│   ├── product
-│   │   ├── __init__.py
-│   │   └── routes.py
-│   ├── static
-│   └── templates
-│       ├── base1.html
-│       ├── base.html
-│       ├── cart.html
-│       ├── category.html
-│       ├── edit_profile.html
-│       ├── favorites.html
-│       ├── home.html
-│       ├── index.html
-│       ├── login.html
-│       ├── product_detail.html
-│       ├── register.html
-│       └── user_profile.html
-├── config.py
-├── data_dump.py
+│   │   └── models
+│   │       ├── base_model.py
+│   │       ├── cart_item.py
+│   │       ├── cart.py
+│   │       ├── category.py
+│   │       ├── favorite.py
+│   │       ├── __init__.py
+│   │       ├── order_item.py
+│   │       ├── order.py
+│   │       ├── product.py
+│   │       └── user.py
+│   ├── README.md
+│   └── run.py
 ├── env_bash.sh
 ├── env_test_bash.sh
-├── env_variabble.py
 ├── README.md
 ├── requirements.txt
-├── run.py
 ├── setup_db.sh
-├── setup_db_test.sh
-└── tests
-    ├── test_db_storage.py
-    ├── test_routes.py
-    └── test_user.py
+├── test.py
+└── web_app
+    ├── app
+    │   ├── blueprints
+    │   │   ├── auth
+    │   │   │   ├── __init__.py
+    │   │   │   └── routes.py
+    │   │   ├── carts
+    │   │   │   ├── __init__.py
+    │   │   │   └── routes.py
+    │   │   ├── categories
+    │   │   │   ├── __init__.py
+    │   │   │   └── routes.py
+    │   │   ├── home
+    │   │   │   ├── __init__.py
+    │   │   │   └── routes.py
+    │   │   ├── __init__.py
+    │   │   ├── products
+    │   │   │   ├── __init__.py
+    │   │   │   └── routes.py
+    │   │   └── users
+    │   │       ├── __init__.py
+    │   │       └── routes.py
+    │   ├── __init__.py
+    │   ├── static
+    │   └── templates
+    │       ├── about.html
+    │       ├── base.html
+    │       ├── cart.html
+    │       ├── category.html
+    │       ├── contact.html
+    │       ├── index.html
+    │       ├── login.html
+    │       ├── product_detail.html
+    │       ├── register.html
+    │       ├── shop.html
+    │       └── user_profile.html
+    ├── config.py
+    ├── README.md
+    └── run.py
 
-12 directories, 49 files
+23 directories, 64 files
 
 ```
 
@@ -127,13 +152,23 @@ pip install -r requirements.txt
 ```bash
 bash setup_db.sh
 ```
-
-- 7- Run the Flask application:
+- 7- Export env variables:
 ```bash
-python3 -m run.py
+source env_bash.sh
 ```
-- 8- Access the app:
-  - Visit: http://localhost:5000
+
+- 8- Run the Flask API application:
+```bash
+python3 -m api.run
+```
+
+- 9- Run the Flask Web application:
+```bash
+python3 -m web_app.run
+```
+
+- 10- Access the app:
+  - Visit: http://localhost:5002
   
 ## Usage
 
@@ -159,7 +194,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Screenshots:
 
-![Product screenshot](./app/static/images/home_page1.png)
+![Product screenshot](./web_app/app/static/images/home_page1.png)
 
 ## About
 
