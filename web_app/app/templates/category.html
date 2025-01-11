@@ -114,7 +114,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <a href="{{ url_for('product.product_detail', product_id=product.id) }}">
-                            <img src="{{url_for('static', filename='images/product.png') }}" class="card-img-top" alt="{{ product.name }}">
+                            <img src="{{ product.image_url or url_for('static', filename='default_product_image.jpg') }}" class="card-img-top" alt="{{ product.name }}">
                         </a>
                         <div class="card-body">
                             <a href="{{ url_for('product.product_detail', product_id=product.id) }}" class="card-title">
@@ -125,7 +125,7 @@
                                 <form action="" method="post" class="me-2">
                                     <button type="submit" class="btn-primary"><i class="fas fa-cart-plus"></i> Add to Cart</button>
                                 </form>
-                                <form action="" method="post">
+                                <form>
                                     <button type="submit" class="btn-secondary"><i class="fas fa-heart"></i> Add to Favorites</button>
                                 </form>
                             </div>
