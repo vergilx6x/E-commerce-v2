@@ -149,24 +149,30 @@ pip install -r requirements.txt
 - 6- Set up the database:
   - Modify your database credentials in the config file (ensure your MySQL server is running).
 ```bash
-bash setup_db.sh
+cat setup_db.sh | mysql -u "root" -p #Enter the password you setted during instalation, if no password setted, don't pass the "-p" argument 
 ```
-- 7- Export env variables:
+
+- 7- Import "data_dump.sql" into mysql:
+```bash
+mysql -u web_admin -p web_db < data_dump.sql #You will be prompted to enter the password (Testpassword6.) for the web_admin user. ( From earlier script. )
+```
+
+- 8- Export env variables:
 ```bash
 source env_bash.sh
 ```
 
-- 8- Run the Flask API application:
+- 9- Run the Flask API application:
 ```bash
 python3 -m api.run
 ```
 
-- 9- Run the Flask Web application:
+- 10- Run the Flask Web application:
 ```bash
 python3 -m web_app.run
 ```
 
-- 10- Access the app:
+- 11- Access the app:
   - Visit: http://localhost:5002
   
 ## Usage
